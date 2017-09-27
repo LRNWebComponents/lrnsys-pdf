@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../pdf-browser-viewer/pdf-browser-viewer.html">
+
+
 
 <!--
 `lrnsys-pdf`
@@ -15,6 +18,14 @@ A LRN element
       }
     </style>
     <h2>[[title]]</h2>
+    <template is="dom-if" if="[[download]]">
+       <pdf-browser-viewer id="pdfViewer" file='[[file]]#page=[[page]]' width="100%" card elevation="3"
+        download-label="Download">
+    </template>
+
+    <template is="dom-if" if="[[!download]]">
+      <pdf-browser-viewer id="pdfViewer" file='[[file]]#page=[[page]]' width="100%">
+    </template>
   </template>
 
   <script>
@@ -26,6 +37,18 @@ A LRN element
         title: {
           type: String,
           value: 'lrnsys-pdf',
+        },
+        page: {
+          type: String
+        },
+        
+        file: {
+          type: String
+        },
+
+        download: {
+          type: Boolean,
+          value: false
         },
       },
 
