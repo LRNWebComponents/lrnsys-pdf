@@ -18,13 +18,7 @@ A LRN element
       }
     </style>
     <h2>[[title]]</h2>
-    <template is="dom-if" if="[[download]]">
-       <pdf-browser-viewer id="pdfViewer" file='[[file]]#page=[[page]]' width="100%" card elevation="3"
-        download-label="Download">
-    </template>
-
-    <template is="dom-if" if="[[!download]]">
-      <pdf-browser-viewer id="pdfViewer" file='[[file]]#page=[[page]]' width="100%">
+    <pdf-browser-viewer id="pdfViewer" file='[[file]]#page=[[page]]' width="100%" card="[[card]]" elevation="2" download-label="[[downloadLabel]]"></pdf-browser-viewer>
     </template>
   </template>
 
@@ -32,22 +26,47 @@ A LRN element
     Polymer({
 
       is: 'lrnsys-pdf',
-
+      behaviors: [HAXBehaviors.PropertiesBehaviors, SchemaBehaviors.Schema],
       properties: {
+        /**
+         * Title prior to the PDF
+         */
         title: {
           type: String,
           value: 'lrnsys-pdf',
         },
+        /**
+         * Whether or not to present this as a card.
+         */
+        card: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * Download Label.
+         */
+        downloadLabel: {
+          type: String,
+          computed: '_computeDownloadLabel(download)',
+        },
+        /**
+         * Active Page
+         */
         page: {
-          type: String
+          type: String,
         },
+        /**
+         * File to present
+         */
         file: {
-          type: String
+          type: String,
         },
-
+        /**
+         * Whether or not to present a download button.
+         */
         download: {
           type: Boolean,
-          value: false
+          value: true,
         },
       },
       /**
@@ -115,7 +134,17 @@ A LRN element
         };
         this.setHaxProperties(props);
       },
-
+      /**
+       * See if we should supply a label.
+       */
+      _computeDownloadLabel: function(download) {
+        if (download) {
+          return 'Download';
+        }
+        else {
+          return null;
+        }
+      },
     });
   </script>
 </dom-module>
